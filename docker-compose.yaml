@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  nginx:
+    image: nginx
+    depends_on:
+      - php
+    restart: always
+    ports:
+      - "8080:80"
+    volumes: 
+      - "./app:/var/www/html"
+      - "./nginx/site.conf:/etc/nginx/conf.d/site.conf"
+
+  php:
+    build:
+      context: ./php
+    restart: always
+    environment:
+      XDEBUG_CONFIG: remote_host=192.168.1.101 # IP of the Docker host
+    volumes:
+      - "./app:/var/www/html"
